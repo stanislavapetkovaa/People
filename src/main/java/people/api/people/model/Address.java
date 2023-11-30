@@ -20,6 +20,19 @@ public class Address {
     private int num;
     @CreationTimestamp
     private LocalDate createdAt;
+
+    public String getStreet() {
+        return street;
+    }
+    public void setStreet(String street) {
+        this.street = street;
+    }
+    public int getNum() {
+        return num;
+    }
+    public void setNum(int num) {
+        this.num = num;
+    }
     @UpdateTimestamp
     private LocalDate updateAt;
     
