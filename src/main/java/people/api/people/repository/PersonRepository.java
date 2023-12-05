@@ -12,8 +12,8 @@ import people.api.people.model.Person;
 public interface PersonRepository extends CrudRepository<Person,Long> {
 
 
-    @Query(nativeQuery = true, value="select * from person where id=1")
-    Collection<Person> findAllActiveUsers(); 
+    // @Query(nativeQuery = true, value="select * from person where id=1")
+    // Collection<Person> findAllActiveUsers(); 
 
     
 

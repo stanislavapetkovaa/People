@@ -24,11 +24,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import people.api.people.web.dto.UpdatePersonBook;
 
 @Entity
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 
 
 public class Person {
@@ -63,8 +66,8 @@ public class Person {
 
 
 
-    @OneToMany(mappedBy = "personId")
-    private List<PersonBook> personBook;
+    @OneToMany(mappedBy = "personId",cascade = CascadeType.ALL)
+    private Set<PersonBook> personBook;
 
 
   

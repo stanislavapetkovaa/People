@@ -1,5 +1,7 @@
 package people.api.people.web;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -7,7 +9,9 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,15 +19,23 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import people.api.people.model.Book;
 import people.api.people.model.Person;
+import people.api.people.model.PersonBook;
+import people.api.people.model.PersonBookPrimaryKey;
 import people.api.people.model.Photo;
+import people.api.people.model.PersonBook.PersonBookBuilder;
 import people.api.people.repository.AddressRepository;
+import people.api.people.repository.BookRepository;
 import people.api.people.repository.FilmRepository;
+
 import people.api.people.repository.PersonRepository;
 import people.api.people.repository.PhotoRepository;
 import people.api.people.web.dto.CreatePersonRequest;
 import people.api.people.web.dto.PersonPhotosResponce;
+import people.api.people.web.dto.UpdatePersonBook;
 import people.api.people.web.dto.UpdatePersonPhotosRequest;
+import people.api.people.web.dto.UpdatePersonRequest;
 
 @RestController
 public class PersonControler {
@@ -36,6 +48,9 @@ public class PersonControler {
     PhotoRepository photoRepository;
     @Autowired
     FilmRepository filmRepository;
+    @Autowired
+    BookRepository bookRepository;
+
 
     @GetMapping(value = "/person")
     public List<Person> getAll(){
@@ -66,8 +81,9 @@ public class PersonControler {
         Set<Photo> photosIndb = (Set<Photo>) photoRepository.findAllById(personPhotos.getPhotoIds());
         for (Photo photo: photosIndb){
             photo.setPerson(person);
-            photoRepository.save(photo);
+            
         }
+        photoRepository.saveAll(photosIndb);
         person.setPhotos(photosIndb);
         Person personAfterSave = personRepository.save(person);
         Set<Long> photosId = (Set<Long>) personAfterSave.getPhotos().stream()
@@ -86,6 +102,76 @@ public class PersonControler {
         return UpdatePersonPhotosRequest.builder().photoIds(photosId).build();
 
     }
+
+    @PatchMapping(value="/person/{id}")
+    private Person updatePerson(@PathVariable Long id, @RequestBody UpdatePersonRequest updatePerson){
+        Person person =personRepository.findById(id).get();
+        person.setFirstName(updatePerson.getFirstName());
+        person.setLastName(updatePerson.getLastName());
+
+        return personRepository.save(person);
+        
+    }
+
+
+    @DeleteMapping(value="/person/{id}")
+    private void deletePerson(@PathVariable Long id){
+        personRepository.deleteById(id);
+
+
+        
+    }
+
+    @PostMapping("/person/{id}/books")
+    private void personBook(@PathVariable Long id, @RequestBody UpdatePersonBook personBookBody){
+        Person person = personRepository.findById(id).get();
+        Book books = bookRepository.findById(personBookBody.getBookId()).get();
+      
+     
+        
+        PersonBook personBook = PersonBook.builder().bookId(books).personId(person).review(personBookBody.getReview()).rating(personBookBody.getRating()).build();
+        
+         Set<PersonBook> personBooks = new HashSet<>();
+      personBooks.add(personBook);
+
+      
+        person.setPersonBook(personBooks);
+        personRepository.save(person);
+       
+        
+
+
+
+
+        
+
+    }
+
+    @GetMapping("/person/{id}/books")
+    public Set<UpdatePersonBook> personBook(@PathVariable Long id){
+        Person person = personRepository.findById(id).get();
+        Set<PersonBook> personBooks= person.getPersonBook();
+        Set<UpdatePersonBook> responceBooks =  personBooks.stream()
+        .map(personBook -> new UpdatePersonBook(personBook.getBookId().getId(),personBook.getPersonId(),personBook.getRating(),personBook.getReview()))
+        .collect(Collectors.toSet());
+        
+
+        return responceBooks;
+      
+    
+       
+
+        
+        
+         
+
+        
+
+
+
+    }
+
+
 
     //UpdatePersonList
 
