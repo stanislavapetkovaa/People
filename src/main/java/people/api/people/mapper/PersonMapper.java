@@ -8,6 +8,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import people.api.people.model.Person;
 import people.api.people.web.dto.CreatePersonRequest;
+import people.api.people.web.dto.UpdatePersonRequest;
 
 @Mapper(uses = {AddressMapper.class}, componentModel="spring")
 public abstract class PersonMapper {
@@ -22,8 +23,8 @@ public abstract class PersonMapper {
 @Mapping(target="address",ignore = true)
 @Mapping(target="films",ignore=true)
 @Mapping(target="firstName", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@Mapping(target="gender", defaultValue = "java(people.api.people.constants.Gender.UNKNOWN)", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
-public abstract Person updateCreateRequest(CreatePersonRequest createPersonRequest);
+@Mapping(target="gender", defaultValue = "java(people.api.people.constants.Gender.UNKNOWN)")
+public abstract Person updateCreateRequest(UpdatePersonRequest updatePersonRequest);
 
 
 @BeforeMapping
