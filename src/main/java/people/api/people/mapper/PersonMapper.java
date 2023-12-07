@@ -22,7 +22,7 @@ public abstract class PersonMapper {
 @Mapping(target="address",ignore = true)
 @Mapping(target="films",ignore=true)
 @Mapping(target="firstName", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@Mapping(target="gender", defaultExpression = "java(people.api.people.constants.Gender.UNKNOWN)", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
+@Mapping(target="gender", defaultValue = "java(people.api.people.constants.Gender.UNKNOWN)", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
 public abstract Person updateCreateRequest(CreatePersonRequest createPersonRequest);
 
 
