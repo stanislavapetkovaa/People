@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.Builder;
 import lombok.Data;
+import people.api.people.error.InvalidObjectException;
+import people.api.people.error.PeopleAPIException;
 
 @RestControllerAdvice
 public class ExceptionHandlerAdvice {
@@ -23,10 +25,25 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(httpEx);
 
     }
+    @ExceptionHandler(InvalidObjectException.class)
+      public org.springframework.http.ResponseEntity<PeopleHttpException> notValid(InvalidObjectException ex){
+        PeopleHttpException httpEx = PeopleHttpException.builder().message(ex.getMessage()).clazz(ex.getClass().getName()).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
 
+    }
 
+    
     private ResponseEntity<NoSuchElementException> ResponseEntity(PeopleHttpException httpEx, HttpStatus notFound) {
         return null;
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public org.springframework.http.ResponseEntity<PeopleHttpException> illegalalArg(IllegalArgumentException ex){
+        PeopleHttpException httpEx = PeopleHttpException.builder().message(ex.getMessage()).clazz(ex.getClass().getName()).build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(httpEx);
+
+
     }
 
 

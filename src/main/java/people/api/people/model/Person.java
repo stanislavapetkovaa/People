@@ -17,6 +17,10 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,15 +36,18 @@ import people.api.people.web.dto.UpdatePersonBook;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-
-
 public class Person {
     @Id
     @GeneratedValue
     @Setter(value=AccessLevel.NONE)
     private Long id;
+    //@NotBlank
     private String firstName;
     private String lastName;
+    //@Min(0)
+    //@Max(199)
+    private Integer age;
+    private String gender; //additional information
     
 
 
@@ -68,6 +75,8 @@ public class Person {
 
     @OneToMany(mappedBy = "personId",cascade = CascadeType.ALL)
     private Set<PersonBook> personBook;
+
+    private Long egn;
 
 
   

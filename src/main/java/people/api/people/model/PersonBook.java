@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.jmx.export.annotation.ManagedResource;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +41,7 @@ public class PersonBook {
 
     @Id
     @ManyToOne
+  
     @JoinColumn(name = "bookId", referencedColumnName = "id")
     private Book bookId;
 
