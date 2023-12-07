@@ -2,11 +2,12 @@ package people.api.people.mapper;
 
 import org.mapstruct.Mapper;
 
+import people.api.people.model.Address;
 import people.api.people.web.dto.AddressDto;
 
-@Mapper
+@Mapper( componentModel="spring")
 public interface AddressMapper {
-    //AddressMapper addressMapper(AddressDto addressDto);
+    Address addressMapper(AddressDto addressDto);
 
     
 } 

@@ -1,5 +1,7 @@
 package people.api.people.mapper;
 
+import org.aspectj.lang.annotation.Before;
+import org.mapstruct.BeforeMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -8,16 +10,28 @@ import people.api.people.model.Person;
 import people.api.people.web.dto.CreatePersonRequest;
 
 @Mapper(uses = {AddressMapper.class}, componentModel="spring")
-public interface PersonMapper {
+public abstract class PersonMapper {
+
+    
+
   
-    Person personFromCreateRequest(CreatePersonRequest createPersonRequest);
+   public abstract Person personFromCreateRequest(CreatePersonRequest createPersonRequest);
 
 
 
 @Mapping(target="address",ignore = true)
 @Mapping(target="films",ignore=true)
 @Mapping(target="firstName", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-Person updateCreateRequest(CreatePersonRequest createPersonRequest);
+@Mapping(target="gender", defaultExpression = "java(people.api.people.constants.Gender.UNKNOWN)", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_DEFAULT)
+public abstract Person updateCreateRequest(CreatePersonRequest createPersonRequest);
+
+
+@BeforeMapping
+void updateGenderToUpperCase(CreatePersonRequest req){
+    req.getGender().toUpperCase();
+
+
+}
 
 
     

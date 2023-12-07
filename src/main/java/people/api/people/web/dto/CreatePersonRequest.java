@@ -20,5 +20,6 @@ public class CreatePersonRequest {
 
     private AddressDto address;
     private Long egn;
+    private String gender;
     
 }

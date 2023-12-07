@@ -28,6 +28,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import people.api.people.constants.Gender;
 import people.api.people.web.dto.UpdatePersonBook;
 
 @Entity
@@ -47,7 +48,7 @@ public class Person {
     //@Min(0)
     //@Max(199)
     private Integer age;
-    private String gender; //additional information
+    private Gender gender; //additional information
     
 
 
