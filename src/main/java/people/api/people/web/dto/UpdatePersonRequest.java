@@ -13,6 +13,8 @@ public class UpdatePersonRequest {
 
     private String firstName;
     private String lastName;
+    private String street;
+    private Long num;
     private String gender;
     
 }

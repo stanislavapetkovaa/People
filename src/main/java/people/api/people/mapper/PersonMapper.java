@@ -6,6 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
+import people.api.people.constants.Gender;
 import people.api.people.model.Person;
 import people.api.people.web.dto.CreatePersonRequest;
 import people.api.people.web.dto.UpdatePersonRequest;
@@ -22,8 +23,10 @@ public abstract class PersonMapper {
 
 @Mapping(target="address",ignore = true)
 @Mapping(target="films",ignore=true)
+@Mapping(source="street",target = "address.street")
+@Mapping(source="num",target="address.num")
 @Mapping(target="firstName", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@Mapping(target="gender", defaultValue = "java(people.api.people.constants.Gender.UNKNOWN)")
+@Mapping(source = "gender",target = "gender", defaultValue = "UNKNOWN")
 public abstract Person updateCreateRequest(UpdatePersonRequest updatePersonRequest);
 
 
